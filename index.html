@@ -14,13 +14,14 @@
 }
 
 body{
-  height:100vh;
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  overflow:hidden;
+  overflow-x:hidden;   /* only horizontal block */
   position:relative;
 }
+
 
 /* HD Background */
 body::before{
@@ -36,6 +37,7 @@ body::before{
   display:flex;
   align-items:center;
   gap:135px;
+  flex-wrap:nowrap;
 }
 
 /* Card */
@@ -77,8 +79,10 @@ button{
 
 #no{
   background:#ddd;
-  position:relative;   /* IMPORTANT — keep relative */
+  position:relative;
+  z-index:10;
 }
+
 
 
 /* Thread */
@@ -105,24 +109,13 @@ button{
 /* Image */
 .side-img{
   width:260px;
+  max-width:40vw;
   height:320px;
   object-fit:cover;
   border-radius:20px;
   box-shadow:0 30px 50px rgba(0,0,0,0.45);
 }
 
-/* Mobile */
-@media(max-width:768px){
-  .container{
-    flex-direction:column;
-    gap:40px;
-  }
-
-  .side-img{
-    width:220px;
-    height:280px;
-  }
-}
 </style>
 </head>
 
@@ -151,8 +144,6 @@ button{
 const noBtn = document.getElementById("no");
 
 function moveButton() {
-
-  // Change to fixed ONLY when escaping
   noBtn.style.position = "fixed";
   noBtn.style.zIndex = "9999";
 
@@ -161,25 +152,29 @@ function moveButton() {
   const maxX = window.innerWidth - noBtn.offsetWidth - padding;
   const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-  const randomX = Math.floor(Math.random() * maxX);
-  const randomY = Math.floor(Math.random() * maxY);
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
 
   noBtn.style.left = randomX + "px";
   noBtn.style.top = randomY + "px";
 }
 
-// Run away when mouse comes near
+/* Desktop hover */
 noBtn.addEventListener("mouseenter", moveButton);
 
-// Also block click fully
-noBtn.addEventListener("click", function(e){
+/* Mobile touch */
+noBtn.addEventListener("touchstart", moveButton);
+
+/* Block click */
+noBtn.addEventListener("click", e => {
   e.preventDefault();
   moveButton();
 });
 
 function yesClick(){
-  alert("I Love You Forever My Husband💖🥹");
+  alert("I Love You Forever My Husband 💖🥹");
 }
 </script>
+
 </body>
 </html>
